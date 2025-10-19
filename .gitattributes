@@ -1,0 +1,7 @@
+# Tratar PDFs como binários (sem conversão de EOL)
+*.pdf binary
+*.pdf -text
+
+# Forçar LF apenas em arquivos de texto
+*.md  text eol=lf
+*.html text eol=lf
