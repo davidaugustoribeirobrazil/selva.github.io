@@ -1,134 +1,127 @@
-# SELVA — Technical Whitepaper (v1.0)
+# SELVA — Technical Whitepaper (v1)
 
 **Chain:** Base (Mainnet)  
-**Standard:** ERC-20 (18 decimals)  
+**Standard:** ERC-20 (no transfer fees, no restrictive hooks)  
+**Decimals:** 18  
 **Token Address:** `0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2`  
-**Primary Market:** Uniswap v3 (Base) — SELVA/USDC (0.3% / 3000)  
-**Pool Address:** `0xF109456223621006e35A66f4Fb5f934E0E63de09`  
+**Primary Pool (Uniswap v3):** SELVA / USDC (fee 0.30%)  
+**Pool Address:** `0xF109456223621006e35A66f4Fb5f934E0E63de09`
 
-> This document describes SELVA’s technical design, market plumbing (DEX/Liquidity), tooling, and operational practices. It is informational and does not constitute financial advice.
+> This document provides the technical and operational context for SELVA as a DEX-first ERC-20 token on Base, outlining contract facts, market structure, routing, tooling, security posture, and governance approach. It is **not** investment advice.
 
 ---
 
 ## 1. Overview
 
-**SELVA** is an ERC-20 token deployed on **Base** designed for practical utility within the SELVA ecosystem—centering on **DEX-native liquidity** (Uniswap v3), **wallet compatibility**, and **automation tooling** for market operations (quotes, approvals, swaps, and LP fee accrual strategies).
+SELVA is an ERC-20 token deployed on the **Base** network with a **DEX-first** liquidity model using **Uniswap v3**. The design prioritizes:
+- **Simplicity at the token level** (standard ERC-20; no fee-on-transfer; no blocklists or custom transfer logic that would break router/pool flows).
+- **Concentrated liquidity** on Uniswap v3 (0.30% fee tier) to support discoverable pricing and efficient swaps against USDC.
+- **Open tooling** for automated execution (quotes, approvals, slippage guard, and on-chain routing via Universal Router + Permit2).
 
-Design principles:
-- **Simplicity & Compatibility:** standard ERC-20 with **no transfer fees** and **no restrictive hooks**; compatible with Uniswap v3, routers, and Permit2/Universal Router flows.
-- **DEX-first Liquidity:** primary pair **SELVA/USDC** on Uniswap v3 (fee tier 0.3%).
-- **Transparent Tooling:** open scripts for approvals, previews, swaps (single-hop) and **autoswap** (randomized sizes & delays within bounds).
-
----
-
-## 2. Contract & Addresses
-
-- **SELVA (ERC-20):**  
-  `0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2` (18 decimals)
-
-- **Uniswap v3 (Base) — operational addresses used by our tooling:**  
-  - **SwapRouter (v3):** `0x2626664c2603336E57B271c5C0b26F421741e481`  
-  - **Quoter (v2/quoter):** `0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a`  
-  - **Primary Pool (SELVA/USDC, 0.3%):** `0xF109456223621006e35A66f4Fb5f934E0E63de09`  
-  - **Permit2 (canonical):** `0x000000000022D473030F116dDEE9F6B43aC78BA3`  
-  - **Universal Router:** printed by scripts at runtime (based on upstream deployments).
-
-> Some protocol addresses are ecosystem-standard. Always verify on-chain.
+**Key addresses**
+- Token: `0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2`  
+  View: https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2
+- Pool (Uniswap v3, fee=3000): `0xF109456223621006e35A66f4Fb5f934E0E63de09`  
+  View: https://app.uniswap.org/positions/v3/base/4052179
 
 ---
 
-## 3. Token Specification
+## 2. Token Contract Characteristics
 
-- **Standard:** ERC-20  
-- **Decimals:** 18  
-- **Transfer Fees:** **None (0%)**  
-- **DEX Compatibility:** confirmed single-hop USDC⇄SELVA via fee **3000 (0.3%)**  
-- **Restrictions / Blacklists / Cooldowns:** **none**  
-- **Ownership & Admin:** disclose owner/multisig/timelock if any (address & privileges).
+- **ERC-20 compliance:** standard interfaces `totalSupply`, `balanceOf`, `transfer`, `allowance`, `approve`, `transferFrom`.
+- **No transfer fees:** tested against Router and Pool paths; transfers and `transferFrom` execute without balance-skimming.
+- **No restrictive hooks:** no cooldowns, max-tx, trading toggles, blacklists, or dynamic taxes that would revert router pathways.
+- **Decimals:** 18.
+- **Ownership/roles:** follow the current on-chain state as visible in the verified contract on BaseScan. Any upgradeability or privileged functions (if present) should be clearly documented in the verified source and timelocked if applicable.
 
----
-
-## 4. Market Structure (Uniswap v3)
-
-- **Primary Pair:** SELVA/USDC (fee 0.3% / 3000); pool: `0xF109...de09`.  
-- **Concentrated Liquidity:** fees accrue when trades cross active liquidity ranges.  
-- **Routing:** single-hop preferred for price clarity; multi-hop only if extra pools have liquidity.
-
-Operational notes:
-- Price outside active range → quotes can revert/near-zero.
-- No fee-on-transfer → avoids common v3 failure mode.
+> **Note:** Readers should always verify the contract on BaseScan to confirm source, compiler settings, and any owner-only methods.
 
 ---
 
-## 5. Tooling & Automation
+## 3. Market Structure (Uniswap v3)
 
-- **Balance & Approval:**  
-  - `approve.js` — handles ERC-20 `approve` (router/Permit2 + Universal Router path).  
-  - `index.js` — stores `ADDRESS` (public) and relies on `.env` for `PRIVATE_KEY`.
+- **Primary pair:** SELVA/USDC at **0.30%** fee tier (`3000`).
+- **Concentrated liquidity:** LPs can place liquidity around chosen price ranges, improving capital efficiency when the market trades within those ticks.
+- **Single-hop routing:** The design targets **USDC ⇄ SELVA** in a single pool to reduce path complexity and revert risks from multi-hop routes.
+- **Price discovery:** Arbitrage and organic order flow align pool price with broader market demand.
 
-- **Swap & Quote:**  
-  - `swap.js` — preview, buy/sell (simple), Permit2/UR flow (when enabled).
-
-- **Autoswap (fee accrual strategy):**  
-  Alterna **compras/vendas** com **valores e delays pseudo-aleatórios** dentro de limites, visando **estimular volume** na faixa ativa (logo, **acúmulo de fees**).
-
-> Secrets (`PRIVATE_KEY` / RPC keys) ficam fora do Git via `.env` + `.gitignore`.
+**Operational notes**
+- **Quotes:** Use Uniswap v3 `Quoter` or Universal Router simulation for `amountOut` previews.  
+- **Slippage:** Recommended default **0.5%** for organic swaps; adapt to market conditions and pool depth.  
+- **Deadline:** Typical **600s** to balance UX and protection against stale quotes.
 
 ---
 
-## 6. LP Fee Accrual — Technical Considerations
+## 4. Execution Tooling
 
-- **Fee tier:** 0.3% (3000)  
-- **Principle:** volume que cruza liquidez ativa gera taxa proporcional  
-- **Ops (exemplo):** delays 2–3s; tamanhos dentro de faixas compatíveis com TVL e pool  
-- **Slippage:** padrão (ex.: 0.5%) com `minOut` seguro  
-- **Ranges:** estreito = maior yield quando ativo (mas sai fácil); largo = menor yield por unit liquidity (mais cobertura)
+The execution stack used during development and testing includes:
 
----
+1. **Allowance Model**
+   - **Permit2 (Uniswap)** for granular allowances from the user to the **Universal Router**.
+   - ERC-20 **`approve(Permit2, max)`** once, and **`Permit2.approve(token, UniversalRouter, amount, expiration)`** to enable router pulls.
+   - The flow avoids approving the Router directly and eases allowance management.
 
-## 7. Wallet & Ecosystem Integration
+2. **Universal Router Path**
+   - Single-hop **USDC → SELVA** (buy) and **SELVA → USDC** (sell).
+   - Pre-trade checks:
+     - Balance/allowance sufficiency.
+     - Optional dry-run / simulation (when RPC supports).
+     - Slippage guard (compute `minOut` from quotes).
 
-- **Wallets:** MetaMask, Base Wallet; import via address + decimals=18  
-- **Logos/Metadata:** SVG/PNG transparentes, square (ex.: 512×512); simetria & proporção áurea  
-- **Coinbase/Base Wallet:** PNG normalmente aceito; SVG recomendado
-
----
-
-## 8. Security Posture
-
-- **Sem fee-on-transfer / honeypot:** testado por `callStatic` e swaps reais  
-- **Permit2/Universal Router:** requer 2 approvals (ERC20→Permit2 e Permit2→UR); automação via flag  
-- **Key management:** `.env` local, nunca em git  
-- **Audits:** adicionar caso existam; caso contrário, “No external audit at this time”
+3. **Automation (optional)**
+   - Alternating buy/sell iterations with **randomized sizes** within user-defined min/max bounds and **randomized delay** between actions (e.g., 2–3s).
+   - Respect RPC rate limits and avoid excessive churn that could trigger RPC throttling.
 
 ---
 
-## 9. Roadmap (High-Level)
+## 5. Liquidity & Pricing Considerations
 
-- **Phase 1:** Liquidity & Wallets (logo, metadata, CoinGecko, docs, UX)  
-- **Phase 2:** LP Analytics (ticks, fee growth, rebalance, simulações)  
-- **Phase 3:** Utilities (dashboards, alerts, pares alternativos conforme liquidez)
-
----
-
-## 10. Disclaimers
-
-Informational only; not financial, investment, or legal advice. Crypto is volatile; DYOR. Protocol addresses and integrations may evolve—verify before transacting.
+- **Depth matters:** Slippage and execution quality depend on how much liquidity covers the current price range.
+- **Range upkeep:** If price exits the active range, the LP position stops earning fees until adjusted.
+- **Rebalancing:** Operators may reposition liquidity or adjust allocations (e.g., widening ranges) as volatility changes.
+- **Visibility:** Listing on aggregators and wallets (Base token list, CoinGecko/CoinMarketCap, Coinbase/Base Wallet metadata) improves discoverability but does not affect on-chain pricing.
 
 ---
 
-## 11. Quick Links
+## 6. Wallet & Metadata Integration
 
-- **Token (BaseScan):** _add contract URL_  
-- **Pool (Uniswap v3, 0.3%):** _add pool URL_  
-- **Repository / Docs:** _your GitHub or site_  
-- **Contact:** _email or form_  
-- **Logo Assets:** _link to SVG/PNGs hosted in repo_
+To improve UX in wallets and explorers:
+- **Token logo:** publish an SVG/PNG (transparent background) and include it in token lists where supported.
+- **Metadata repositories:** submit PRs to relevant lists (Base token lists, wallet registries).
+- **Explorers:** ensure contract verification on BaseScan with publicly accessible source and metadata.
+- **CoinGecko/CEX trackers:** provide whitepaper link (GitHub Pages), official website, social links (e.g., Telegram `t.me/selvatoken`), and pool address.
 
+---
 
-## Whitepaper
+## 7. Security Posture
 
-- Markdown: [`docs/whitepaper.md`](docs/whitepaper.md)
-- HTML (arquivo): [`docs/SELVA_Whitepaper_v1_noAppendix.html`](docs/SELVA_Whitepaper_v1_noAppendix.html)
-- PDF (arquivo): [`docs/SELVA_Whitepaper_v1_noAppendix.pdf`](docs/SELVA_Whitepaper_v1_noAppendix.pdf)
+- **Key management:** treat deployer and any privileged wallets as high-risk; use hardware wallets and least privilege.
+- **Approvals hygiene:** regularly review Permit2 allowances and revoke unused ones.
+- **No fee-on-transfer:** ensures compatibility with Uniswap v3 Router/Pool; fee-on-transfer tokens are not supported in v3 swap math.
+- **Testing:** pre-flight calls to token and pool (e.g., `transferFrom` dry-runs) help detect incompatible token logic before submitting swaps.
 
+---
+
+## 8. Roadmap
+
+- **Phase 1:** Stable SELVA/USDC pool at 0.30%, documentation (this whitepaper), landing site (GitHub Pages), wallet/logo submissions.  
+- **Phase 2:** Liquidity instrumentation (monitoring ranges, fees), improved automations with safety guards, community integrations.  
+- **Phase 3:** Listings on major token registries, analytics dashboards, extended collateral/utility integrations where appropriate.
+
+---
+
+## 9. Disclaimers
+
+- SELVA is provided “as is” with no warranties.  
+- Interacting with on-chain contracts involves risk (market, smart-contract, operational, RPC).  
+- Nothing in this document constitutes financial advice. Do your own research.
+
+---
+
+## 10. Useful Links
+
+- **Token (BaseScan):** https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2  
+- **Pool (Uniswap v3 0.30%):** https://app.uniswap.org/positions/v3/base/4052179  
+- **Landing Page:** https://davidaugustoribeirobrazil.github.io/selva.github.io/  
+- **Whitepaper (HTML):** https://davidaugustoribeirobrazil.github.io/selva.github.io/SELVA_Whitepaper_v1_noAppendix.html  
+- **Whitepaper (PDF):** https://davidaugustoribeirobrazil.github.io/selva.github.io/SELVA_Whitepaper_v1_noAppendix.pdf
