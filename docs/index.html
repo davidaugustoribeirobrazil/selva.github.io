@@ -19,19 +19,19 @@
     p{margin:.5rem 0;color:var(--fg)}
     .meta{color:var(--muted);font-size:.95rem;margin-top:2px}
 
-    /* GRID: aumentei a largura mínima para 320px */
+    /* GRID cards mais larguinhos */
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin:24px 0}
 
     .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
-
     .card h3{margin:.2rem 0 .6rem;font-size:1.05rem}
+
     a{color:var(--link);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    /* QUEBRA DE LINHA em conteúdo longo dentro dos cards */
+    /* Quebra de linha para conteúdos longos */
     .card, .card p, .card li, .card a, .card code{
-      overflow-wrap:anywhere;   /* permite quebra em qualquer ponto se necessário */
-      word-break:break-word;    /* navegadores antigos */
+      overflow-wrap:anywhere;
+      word-break:break-word;
     }
 
     code{
@@ -41,10 +41,14 @@
     }
 
     footer{margin:32px 0;color:var(--muted);font-size:.9rem;text-align:center}
+
     .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#12181c}
     .btn:hover{background:#0e1317}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    @media (max-width:720px){.grid-2{grid-template-columns:1fr}}
+
+    /* Grid de botões do whitepaper: 3 colunas com wrap em telas menores */
+    .btn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media (max-width:640px){.btn-row{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -64,11 +68,11 @@
       <div class="card">
         <h3>Whitepaper</h3>
         <p>Read the technical overview, market structure, tooling and security posture.</p>
-        <p class="grid-2">
+        <div class="btn-row">
           <a class="btn" href="./whitepaper.md">Markdown</a>
           <a class="btn" href="./SELVA_Whitepaper_v1_noAppendix.html">HTML</a>
-        </p>
-        <p><a href="./SELVA_Whitepaper_v1_noAppendix.pdf">PDF version</a></p>
+          <a class="btn" href="./SELVA_Whitepaper_v1_noAppendix.pdf">PDF</a>
+        </div>
       </div>
 
       <div class="card">
