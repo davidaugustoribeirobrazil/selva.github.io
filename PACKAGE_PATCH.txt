@@ -1,0 +1,15 @@
+// --- Merge these into your package.json ---
+// devDependencies additions:
+// "@types/node": "^20.14.10",
+// "ts-node": "^10.9.2",
+// "typescript": "^5.4.5",
+// "@uniswap/v3-sdk": "^3.20.1",
+// "@uniswap/sdk-core": "^4.1.24",
+// "viem": "^2.13.1"
+//
+// dependencies additions (if not present):
+// "ethers": "^6.13.2"
+//
+// scripts additions:
+// "pool:create": "ts-node scripts/createPoolAndLP.ts",
+// "accounts": "node scripts/check-accounts.js"

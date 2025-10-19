@@ -1,0 +1,56 @@
+# =========================
+# NODE / NPM / PNPM / YARN
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# BUILD / GERADOS
+# =========================
+dist/
+out/
+build/
+coverage/
+.cache/
+*.tsbuildinfo
+
+# =========================
+# HARDHAT
+# =========================
+artifacts/
+cache/
+typechain/
+typechain-types/
+# (ABIs públicos: mantenha-os em uma pasta própria, ex.: abis/, fora de artifacts/)
+
+# =========================
+# SEGREDOS / CREDENCIAIS
+# =========================
+.env
+.env.*
+*.key
+*.pem
+*.secret
+*.keystore
+*.p12
+
+# =========================
+# IDE / SISTEMA
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# =========================
+# LOGS
+# =========================
+*.log
+
+# =========================
+# OPTIONAL: LOCKFILES
+# (Se quiser versionar o package-lock.json, comente esta linha)
+# package-lock.json

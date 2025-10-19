@@ -1,0 +1,39 @@
+{
+  "name": "selva-token",
+  "version": "1.1.0",
+  "private": true,
+  "description": "ERC-20 SELVA token on Base (Hardhat project) + Uniswap v3 pool scripts",
+  "scripts": {
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+    "deploy:base-sepolia": "hardhat run scripts/deploy.js --network base-sepolia",
+    "deploy:base": "hardhat run scripts/deploy.js --network base",
+    "verify:base": "hardhat verify --network base $ADDRESS $INITIAL_SUPPLY $OWNER_ADDRESS",
+    "verify:base-sepolia": "hardhat verify --network base-sepolia $ADDRESS $INITIAL_SUPPLY $OWNER_ADDRESS",
+    "pool:create": "ts-node scripts/createPoolAndLP.ts",
+    "accounts": "node scripts/check-accounts.js",
+    "pool:create:js": "hardhat run scripts/createPoolAndLP.js",
+    "pool:remove": "hardhat run scripts/removeLiquidityAndCollect.js",
+    "pool:burn": "hardhat run scripts/burnPosition.js",
+    "pool:increase": "hardhat run scripts/increaseLiquiditySingleSided.js",
+    "hardhat": "hardhat"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^20.14.10",
+    "@uniswap/sdk-core": "^7.8.0",
+    "@uniswap/v3-sdk": "^3.26.0",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.22.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "viem": "^2.38.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "@uniswap/universal-router-sdk": "^4.20.0",
+    "jsbi": "^4.3.2"
+  }
+}

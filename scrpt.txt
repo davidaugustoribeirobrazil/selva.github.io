@@ -1,0 +1,147 @@
+import "dotenv/config";
+import { ethers } from "hardhat";
+import { parseUnits } from "ethers";
+import { encodeAbiParameters, getAddress } from "viem";
+
+// ENDEREÇOS (Base)
+const NPM = "0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1"; // NonfungiblePositionManager
+const FACTORY = "0xCb2436774C3e191c85056d248EF4260Ce5F27A9D"; // v3 Factory
+const USDC = "0x833589fCD6EDb6E08f4c7C32D4f71B54Bda02913";
+const WETH = "0x4200000000000000000000000000000000000006";
+
+// === EDITE AQUI ===
+const SELVA = process.env.SELVA_ADDRESS!; // endereço do seu token
+const BASE_PAIR = process.env.PAIR_TOKEN ?? "USDC"; // "USDC" ou "WETH"
+const FEE = 3000; // 500, 3000, 10000
+const PRICE_SELVA_IN_BASE = "0.01"; // ex.: 0.01 USDC por 1 SELVA
+const AMOUNT_SELVA = "500000"; // SELVA a aportar inicialmente
+// ==================
+
+function sortTokens(a: string, b: string) {
+  return getAddress(a.toLowerCase()) < getAddress(b.toLowerCase())
+    ? [a, b]
+    : [b, a];
+}
+
+function tickSpacing(fee: number) {
+  if (fee === 100) return 1;
+  if (fee === 500) return 10;
+  if (fee === 3000) return 60;
+  if (fee === 10000) return 200;
+  throw new Error("fee inválida");
+}
+
+// preço para sqrtPriceX96 dado P = token1/token0
+// Se token0=USDC(6) e token1=SELVA(18) e P=0.01 USDC/SELVA, então precisamos inverter conforme a ordenação.
+function encodeSqrtPriceX96(price: number) {
+  const sqrt = Math.sqrt(price);
+  const Q96 = 2n ** 96n;
+  return BigInt(Math.floor(sqrt * Number(Q96)));
+}
+
+async function main() {
+  if (!SELVA) throw new Error("Defina SELVA_ADDRESS no .env");
+  const [signer] = await ethers.getSigners();
+  console.log("Deployer:", await signer.getAddress());
+
+  const baseToken = BASE_PAIR === "WETH" ? WETH : USDC;
+  const [t0, t1] = sortTokens(baseToken, SELVA);
+  const token0 = t0;
+  const token1 = t1;
+
+  // Descobrir decimais (assumindo 6 p/ USDC, 18 p/ WETH/SELVA; ou leia via ABI ERC20)
+  const dec0 = token0.toLowerCase() === USDC.toLowerCase() ? 6 : 18;
+  const dec1 = token1.toLowerCase() === USDC.toLowerCase() ? 6 : 18;
+
+  // Converter preço-alvo (em "BASE por SELVA") para P = token1/token0
+  // Se token0 = BASE e token1 = SELVA => P = (SELVA / BASE) = 1 / (BASE por SELVA)
+  // Se token0 = SELVA e token1 = BASE => P = (BASE / SELVA) = (BASE por SELVA)
+  let priceBasePerSelva = Number(PRICE_SELVA_IN_BASE);
+  let P: number;
+  if (token0.toLowerCase() === SELVA.toLowerCase()) {
+    // P = BASE/SELVA = priceBasePerSelva (ajuste decimais)
+    P = priceBasePerSelva * 10 ** (dec1 - dec0);
+  } else {
+    // token0 é BASE -> P = SELVA/BASE = 1/priceBasePerSelva
+    P = (1 / priceBasePerSelva) * 10 ** (dec1 - dec0);
+  }
+  const sqrtPriceX96 = encodeSqrtPriceX96(P);
+
+  // ABIs mínimas
+  const erc20 = [
+    "function approve(address,uint256) external returns(bool)",
+    "function decimals() view returns(uint8)"
+  ];
+  const npmAbi = [
+    "function createAndInitializePoolIfNecessary(address,address,uint24,uint160) external payable returns (address pool)",
+    "function mint((address token0,address token1,uint24 fee,int24 tickLower,int24 tickUpper,uint256 amount0Desired,uint256 amount1Desired,uint256 amount0Min,uint256 amount1Min,address recipient,uint256 deadline)) external payable returns (uint256 tokenId, uint128 liquidity, uint256 amount0, uint256 amount1)"
+  ];
+
+  const npm = new ethers.Contract(NPM, npmAbi, signer);
+
+  // 1) Criar+inicializar pool (se necessário)
+  console.log("Creating/initializing pool...");
+  const txPool = await npm.createAndInitializePoolIfNecessary(
+    token0,
+    token1,
+    FEE,
+    sqrtPriceX96
+  );
+  const rcPool = await txPool.wait();
+  const poolAddress = rcPool?.logs?.[0]?.address;
+  console.log("Pool (provável):", poolAddress, "(confirme no explorer)");
+
+  // 2) Calcular faixa ±20%
+  const ts = tickSpacing(FEE);
+  // converter preço para "ticks" é não trivial; aqui vamos usar aproximação de +/- ~ 20% via fator
+  const lowerFactor = 0.8;
+  const upperFactor = 1.2;
+
+  // 3) Aprovar tokens e prover liquidez
+  const tokenSelva = new ethers.Contract(SELVA, erc20, signer);
+  const tokenBase = new ethers.Contract(baseToken, erc20, signer);
+
+  // Montantes desejados (ajuste conforme seu balance)
+  const amtSelva = parseUnits(AMOUNT_SELVA, 18);
+  // Base (USDC 6 dec / WETH 18 dec): estimativa simples pela razão alvo
+  const baseDecimals = baseToken.toLowerCase() === USDC.toLowerCase() ? 6 : 18;
+  const amtBaseNum =
+    BASE_PAIR === "USDC"
+      ? Number(AMOUNT_SELVA) * Number(PRICE_SELVA_IN_BASE) // USDC por SELVA
+      : Number(AMOUNT_SELVA) * Number(PRICE_SELVA_IN_BASE); // WETH por SELVA (ajuste conforme desejado)
+  const amtBase = parseUnits(amtBaseNum.toFixed(baseDecimals), baseDecimals);
+
+  // Aprovações
+  console.log("Approving tokens...");
+  await (await tokenSelva.approve(NPM, amtSelva)).wait();
+  await (await tokenBase.approve(NPM, amtBase)).wait();
+
+  // Calcular ticks aproximados (simplificado: use ferramentas off-chain para precisão)
+  // Para um setup real, use @uniswap/v3-sdk para converter preço→tick com exatidão.
+  const now = Math.floor(Date.now() / 1000);
+  const params = {
+    token0,
+    token1,
+    fee: FEE,
+    tickLower: -120 * ts, // placeholder: faixa larga; ajuste com SDK
+    tickUpper: 120 * ts,  // placeholder
+    amount0Desired:
+      token0.toLowerCase() === SELVA.toLowerCase() ? amtSelva : amtBase,
+    amount1Desired:
+      token1.toLowerCase() === SELVA.toLowerCase() ? amtSelva : amtBase,
+    amount0Min: 0,
+    amount1Min: 0,
+    recipient: await signer.getAddress(),
+    deadline: now + 60 * 20
+  };
+
+  console.log("Minting position...");
+  const txMint = await npm.mint(params);
+  const rcMint = await txMint.wait();
+  console.log("Liquidity position criada! (verifique seu NFT de LP)");
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
