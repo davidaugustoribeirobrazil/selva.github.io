@@ -1,23 +1,43 @@
 /* @theme selva */
 @import 'default';
-@page { size: A4 portrait; }
 
-/* Corpo de cada página (slide) */
+/* Tamanho e margem da página do PDF */
+@page {
+  size: A4 portrait;
+  /* margem para respirar a moldura */
+  margin: 20mm;
+}
+
+/* Cada página (slide) */
 section {
-  /* base menor que o default do Marp */
-  font-size: 18px;      /* ajuste principal de tipografia */
+  /* tipografia */
+  font-size: 18px;
   line-height: 1.6;
   color: #111;
-  background: #fff;
-  padding: 40px;        /* margens internas confortáveis */
 
-  /* Alinhar o conteúdo no topo (em vez de central vertical) */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* <- chave para começar no topo */
-  align-items: stretch;
-  min-height: 100%;
+  /* fundo e espaçamento interno */
+  background: #fff;
+  padding: 28px; /* foi 40px; reduzido p/ acomodar a moldura */
+
+  /* alinhar no topo SEMPRE */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important; /* chave: começa no topo */
+  align-items: stretch !important;
+
+  /* evitar centralização por alturas fixas do tema base */
+  height: auto !important;
+  min-height: 100% !important;
+
+  /* moldura minimalista */
+  position: relative;
+  border: 10px solid #e5e7eb;       /* cinza claro (Tailwind zinc-200) */
+  border-radius: 10px;              /* cantos sutis */
+  box-shadow: 0 1px 2px rgba(0,0,0,.05); /* sombra bem leve */
 }
+
+/* Remove qualquer “empurrão” no topo */
+section > :first-child { margin-top: 0 !important; }
 
 /* Títulos */
 section h1 { font-size: 28px; margin: 0 0 12px; }
@@ -27,7 +47,7 @@ section h3 { font-size: 18px; margin: 16px 0 8px; }
 /* Listas e código */
 section ul, section ol { margin: 8px 0 8px 20px; }
 section code, section pre { font-size: 85%; }
-section pre { padding: 10px; background: #f6f8fa; border-radius: 6px; }
+section pre { padding: 10px; background: #f6f8fa; border-radius: 14px; }
 
 /* Links */
 section a { color: #0b5bd3; text-decoration: none; }
