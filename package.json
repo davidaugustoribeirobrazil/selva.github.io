@@ -27,6 +27,8 @@
     "dotenv": "^16.6.1",
     "ethers": "^6.15.0",
     "hardhat": "^2.22.6",
+    "markdown-it-cli": "^1.0.0",
+    "md-to-pdf": "^5.2.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "viem": "^2.38.2"
