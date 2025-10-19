@@ -124,3 +124,11 @@ Informational only; not financial, investment, or legal advice. Crypto is volati
 - **Repository / Docs:** _your GitHub or site_  
 - **Contact:** _email or form_  
 - **Logo Assets:** _link to SVG/PNGs hosted in repo_
+
+
+## Whitepaper
+
+- Markdown: [`docs/whitepaper.md`](docs/whitepaper.md)
+- HTML (arquivo): [`docs/SELVA_Whitepaper_v1_noAppendix.html`](docs/SELVA_Whitepaper_v1_noAppendix.html)
+- PDF (arquivo): [`docs/SELVA_Whitepaper_v1_noAppendix.pdf`](docs/SELVA_Whitepaper_v1_noAppendix.pdf)
+
