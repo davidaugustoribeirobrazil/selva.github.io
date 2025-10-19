@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SELVA — Official Token Page</title>
+  <meta name="description" content="SELVA is an ERC-20 token on Base. View the whitepaper, contract, and pool details." />
+  <style>
+    :root{
+      --bg:#0b0d10; --fg:#e6e6e6; --muted:#a9b1bb; --acc:#22c55e; --card:#101417; --border:#1b222a;
+      --link:#93c5fd;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans',sans-serif;line-height:1.6}
+    .wrap{max-width:920px;margin:40px auto;padding:0 20px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(180deg,#0e1712,#0b1310);display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
+    .logo span{font-weight:800;color:var(--acc)}
+    h1{margin:0;font-size:1.9rem;line-height:1.2}
+    p{margin:.5rem 0;color:var(--fg)}
+    .meta{color:var(--muted);font-size:.95rem;margin-top:2px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h3{margin:.2rem 0 .6rem;font-size:1.05rem}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    code{background:#0e1116;border:1px solid var(--border);padding:2px 6px;border-radius:8px}
+    footer{margin:32px 0;color:var(--muted);font-size:.9rem;text-align:center}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#12181c}
+    .btn:hover{background:#0e1317}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:720px){.grid-2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true"><span>⟐</span></div>
+      <div>
+        <h1>SELVA — Official Token Page</h1>
+        <div class="meta">ERC-20 on Base | 18 decimals | DEX-first liquidity (Uniswap v3)</div>
+      </div>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <h3>Whitepaper</h3>
+        <p>Read the technical overview, market structure, tooling and security posture.</p>
+        <p class="grid-2">
+          <a class="btn" href="./whitepaper.md">Markdown</a>
+          <a class="btn" href="./SELVA_Whitepaper_v1_noAppendix.html">HTML</a>
+        </p>
+        <p><a href="./SELVA_Whitepaper_v1_noAppendix.pdf">PDF version</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Contract</h3>
+        <p><strong>Address:</strong> <code>0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2</code></p>
+        <p><a href="https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2" target="_blank" rel="noopener">View on BaseScan</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Primary Pool (Uniswap v3)</h3>
+        <p>Pair: <strong>SELVA / USDC</strong> — Fee Tier <code>0.3% (3000)</code></p>
+        <p><strong>Pool:</strong> <code>0xF109456223621006e35A66f4Fb5f934E0E63de09</code></p>
+        <p><a href="https://app.uniswap.org/explore/pools/base/0xF109456223621006e35A66f4Fb5f934E0E63de09" target="_blank" rel="noopener">Open in Uniswap</a></p>
+      </div>
+
+      <div class="card">
+        <h3>Ecosystem Links</h3>
+        <ul>
+          <li><a href="https://basescan.org/address/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2" target="_blank" rel="noopener">Holder view (BaseScan)</a></li>
+          <li><a href="https://wallet.coinbase.com" target="_blank" rel="noopener">Base Wallet</a></li>
+          <li><a href="https://metamask.io" target="_blank" rel="noopener">MetaMask</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>At a Glance</h3>
+      <ul>
+        <li><strong>Standard:</strong> ERC-20 (no transfer fees, no restrictive hooks)</li>
+        <li><strong>Decimals:</strong> 18</li>
+        <li><strong>Chain:</strong> Base (Mainnet)</li>
+        <li><strong>Routing:</strong> Single-hop USDC ⇄ SELVA on Uniswap v3 (fee 3000)</li>
+      </ul>
+    </section>
+
+    <footer>
+      © SELVA — This site is informational and not financial advice.
+    </footer>
+  </div>
+</body>
+</html>
