@@ -14,8 +14,7 @@
     body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans',sans-serif;line-height:1.6}
     .wrap{max-width:920px;margin:40px auto;padding:0 20px}
     header{display:flex;align-items:center;gap:16px;margin-bottom:24px}
-    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(180deg,#0e1712,#0b1310);display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
-    .logo span{font-weight:800;color:var(--acc)}
+    .logo{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);overflow:hidden;background:transparent}
     h1{margin:0;font-size:1.9rem;line-height:1.2}
     p{margin:.5rem 0;color:var(--fg)}
     .meta{color:var(--muted);font-size:.95rem;margin-top:2px}
@@ -35,7 +34,10 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="logo" aria-hidden="true"><span>⟐</span></div>
+      <!-- Logo atualizada -->
+      <div class="logo" aria-hidden="true">
+        <img src="./assets/selva-logo.png" alt="SELVA token logo" width="52" height="52" style="display:block" />
+      </div>
       <div>
         <h1>SELVA — Official Token Page</h1>
         <div class="meta">ERC-20 on Base | 18 decimals | DEX-first liquidity (Uniswap v3)</div>
