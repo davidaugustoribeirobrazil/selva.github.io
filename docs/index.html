@@ -18,12 +18,28 @@
     h1{margin:0;font-size:1.9rem;line-height:1.2}
     p{margin:.5rem 0;color:var(--fg)}
     .meta{color:var(--muted);font-size:.95rem;margin-top:2px}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0}
+
+    /* GRID: aumentei a largura mínima para 320px */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin:24px 0}
+
     .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+
     .card h3{margin:.2rem 0 .6rem;font-size:1.05rem}
     a{color:var(--link);text-decoration:none}
     a:hover{text-decoration:underline}
-    code{background:#0e1116;border:1px solid var(--border);padding:2px 6px;border-radius:8px}
+
+    /* QUEBRA DE LINHA em conteúdo longo dentro dos cards */
+    .card, .card p, .card li, .card a, .card code{
+      overflow-wrap:anywhere;   /* permite quebra em qualquer ponto se necessário */
+      word-break:break-word;    /* navegadores antigos */
+    }
+
+    code{
+      background:#0e1116;border:1px solid var(--border);padding:2px 6px;border-radius:8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size:.9rem; display:inline-block; max-width:100%;
+    }
+
     footer{margin:32px 0;color:var(--muted);font-size:.9rem;text-align:center}
     .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#12181c}
     .btn:hover{background:#0e1317}
@@ -34,7 +50,7 @@
 <body>
   <div class="wrap">
     <header>
-      <!-- Logo atualizada -->
+      <!-- Logo -->
       <div class="logo" aria-hidden="true">
         <img src="./assets/selva-logo.png" alt="SELVA token logo" width="52" height="52" style="display:block" />
       </div>
