@@ -1,0 +1,34 @@
+/* @theme selva */
+@import 'default';
+@page { size: A4 portrait; }
+
+/* Corpo de cada página (slide) */
+section {
+  /* base menor que o default do Marp */
+  font-size: 18px;      /* ajuste principal de tipografia */
+  line-height: 1.6;
+  color: #111;
+  background: #fff;
+  padding: 40px;        /* margens internas confortáveis */
+
+  /* Alinhar o conteúdo no topo (em vez de central vertical) */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* <- chave para começar no topo */
+  align-items: stretch;
+  min-height: 100%;
+}
+
+/* Títulos */
+section h1 { font-size: 28px; margin: 0 0 12px; }
+section h2 { font-size: 22px; margin: 18px 0 8px; }
+section h3 { font-size: 18px; margin: 16px 0 8px; }
+
+/* Listas e código */
+section ul, section ol { margin: 8px 0 8px 20px; }
+section code, section pre { font-size: 85%; }
+section pre { padding: 10px; background: #f6f8fa; border-radius: 6px; }
+
+/* Links */
+section a { color: #0b5bd3; text-decoration: none; }
+section a:hover { text-decoration: underline; }
