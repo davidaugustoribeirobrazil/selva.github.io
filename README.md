@@ -1,64 +1,38 @@
-# SELVA – Token ERC‑20 na Base (Hardhat)
+# SELVA — ERC-20 Token on **Base** (Hardhat Monorepo)
 
-Projeto Hardhat para o token **SELVA** (símbolo `SELVA`) pensado para a rede **Base**.
-- **Padrões**: ERC‑20, ERC‑2612 (permit), Burnable
-- **Suprimento**: fixo (cunhado 1x no construtor)
-- **Taxas**: nenhuma
-- **Admin**: `Ownable` (defina um multisig como owner ou renuncie)
+**SELVA** is a minimal, auditable ERC-20 with EIP-2612 Permit (no fees, no blacklist, no rebase), deployed on **Base**.  
+This repository contains the smart contracts, Hardhat setup, deployment/verification scripts, and docs (whitepaper + site).
 
-> Observação: Listagem na Coinbase depende de critérios fora do código (conformidade, riscos, liquidez, etc.). Este repositório entrega um contrato simples e verificável, geralmente preferido por corretoras, mas **não garante listagem**.
+> ⚠️ Exchange/wallet listings depend on third-party criteria (risk, compliance, liquidity). A simple & verified contract helps, but **does not guarantee listing**.
 
-## Pré‑requisitos
-- Node.js 18+
-- Chave privada com fundos em Base / Base Sepolia
-- RPCs:
-  - Base mainnet: `https://mainnet.base.org` (ou provedor como Alchemy/Infura)
-  - Base Sepolia: `https://sepolia.base.org`
-- Conta no BaseScan para obter `BASESCAN_API_KEY` (verificação do contrato)
+---
 
-## Instalação
-```bash
-npm i
-```
+## Quick links
 
-## Configuração (.env)
-Crie `.env` a partir do exemplo:
-```env
-PRIVATE_KEY=0xSEU_PRIV_KEY
-OWNER_ADDRESS=0xDONO_OU_MULTISIG
-INITIAL_SUPPLY=1000000000000000000000000   # 1,000,000 SELVA (18 decimais)
-BASE_RPC_URL=https://mainnet.base.org
-BASE_SEPOLIA_RPC_URL=https://sepolia.base.org
-BASESCAN_API_KEY=coloque_sua_chave
-```
+- **Website (GitHub Pages):** https://davidaugustoribeirobrazil.github.io/selva.github.io/
+- **Token (BaseScan):** https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2
+- **Contract (BaseScan address):** https://basescan.org/address/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2
+- **Primary Pool (Uniswap v3 0.30%):** https://app.uniswap.org/positions/v3/base/4052179
+- **Whitepaper:**  
+  - **Markdown:** [`docs/whitepaper.md`](docs/whitepaper.md)  
+  - **HTML:** [`docs/SELVA_Whitepaper_v1_noAppendix.html`](docs/SELVA_Whitepaper_v1_noAppendix.html)  
+  - **PDF:** [`docs/SELVA_Whitepaper_v1_noAppendix.pdf`](docs/SELVA_Whitepaper_v1_noAppendix.pdf)
+- **Logos (SVG/PNG):** [`logos/`](logos/)
 
-## Comandos úteis
-```bash
-# Compilar e testar
-npx hardhat compile
-npx hardhat test
+---
 
-# Deploy em Base Sepolia (teste)
-npm run deploy:base-sepolia
+## Contract summary
 
-# Deploy em Base mainnet
-npm run deploy:base
+- **Standard:** ERC-20 + **EIP-2612 Permit**
+- **Symbol / Decimals:** `SELVA` / `18`
+- **Supply model:** Fixed (all minted once in constructor)
+- **Fees / blacklist / rebase:** **None**
+- **Ownership:** `Ownable`
+  - Recommended: set a **multisig** as owner (Gnosis Safe / Safe)
+  - Or renounce ownership if you don’t need privileged actions
+- **Chain:** Base (mainnet)
 
-# Verificar no BaseScan (substitua ADDRESS pelo endereço retornado no deploy)
-ADDRESS=0xSEU_CONTRATO npm run verify:base-sepolia
-ADDRESS=0xSEU_CONTRATO npm run verify:base
-```
+---
 
-## Boas práticas para listagem
-- **Código simples** (sem taxas/blacklists/rebase), **verificado** no BaseScan.
-- **Owner**: use **multisig**; ou **renuncie** (`renounceOwnership`) se o projeto não precisar de controles.
-- **Auditoria** e documentação pública da **tokenomics**.
-- Política de **não‑mint** (suprimento fixo) – já adotado neste contrato.
+## Repository layout
 
-## Parametrização de suprimento
-O construtor recebe `initialSupply` em wei (18 casas). Exemplos:
-- 1,000,000 SELVA → `1_000_000 * 10**18`
-- 1,000,000,000 SELVA → `1_000_000_000 * 10**18`
-
-## Licença
-MIT
