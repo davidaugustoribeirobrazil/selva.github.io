@@ -1,0 +1,5 @@
+# cria a pasta (se ainda não existir)
+mkdir -Force docs\api | Out-Null
+
+# grava o valor como JSON simples (string)
+' "1000000.0" ' | Set-Content -Encoding UTF8 docs\api\total-supply.json
