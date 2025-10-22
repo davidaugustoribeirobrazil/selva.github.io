@@ -1,0 +1,24 @@
+{
+  "name": "Macauba Community List (MACAUBA symbol)",
+  "logoURI": "https://davidaugustoribeirobrazil.github.io/selva.github.io/docs/assets/selva-logo-200x200.png",
+  "keywords": ["macauba", "selva", "base"],
+  "timestamp": "2025-10-22T00:00:00+00:00",
+  "version": { "major": 1, "minor": 0, "patch": 0 },
+  "tokens": [
+    {
+      "chainId": 8453,
+      "address": "0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2",
+      "name": "Macaúba",
+      "symbol": "MACAUBA",
+      "decimals": 18,
+      "logoURI": "https://davidaugustoribeirobrazil.github.io/selva.github.io/docs/assets/selva-logo-200x200.png",
+      "extensions": {
+        "description": "Rebrand de SELVA para Macaúba com símbolo MACAUBA (apenas visual/UI). O contrato permanece o mesmo.",
+        "website": "https://davidaugustoribeirobrazil.github.io/selva.github.io/",
+        "bridge": "https://bridge.base.org",
+        "documentation": "https://davidaugustoribeirobrazil.github.io/selva.github.io/whitepaper"
+      }
+    }
+  ]
+}
+
