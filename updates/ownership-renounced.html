@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SELVA — Contract Ownership Renounced</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SELVA token is now permissionless/immutable. On-chain proof on BaseScan.">
+  <link rel="canonical" href="https://davidaugustoribeirobrazil.github.io/selva.github.io/updates/ownership-renounced.html">
+  <meta property="og:title" content="SELVA — Contract Ownership Renounced">
+  <meta property="og:description" content="SELVA token is now permissionless/immutable. Proof on BaseScan.">
+  <meta name="twitter:card" content="summary">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; color: #0f172a; }
+    .container { max-width: 820px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .muted { color: #475569; font-size: 14px; margin-bottom: 24px; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 18px; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    a { color: #2563eb; }
+    ul { margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SELVA — Contract Ownership Renounced</h1>
+    <div class="muted">Date: October 27, 2025 (UTC−3)</div>
+
+    <p>We have renounced ownership of the SELVA token contract on Base. The token is now <strong>permissionless/immutable</strong> (<span class="mono">owner()</span> returns <span class="mono">0x000…0000</span>).</p>
+
+    <div class="card">
+      <p><strong>Contract (Base):</strong> <span class="mono">0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2</span></p>
+      <p><strong>On-chain proof:</strong></p>
+      <ul>
+        <li>Timelock <em>schedule</em>: <a href="https://basescan.org/tx/0xd8dbdb5d66d278f8b7e204983f3168487d9159d341fde1cfc1ee4f54bc47357e" target="_blank" rel="noopener">0xd8db…357e</a></li>
+        <li>Timelock <em>execute</em>: <a href="https://basescan.org/tx/0x0a6d19e63117fa30ca41ee1a333f25b83c33e846e5f11fbfeca26f8b9bc42720" target="_blank" rel="noopener">0x0a6d…2720</a></li>
+        <li><span class="mono">owner()</span> reading: <a href="https://basescan.org/address/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2#readContract" target="_blank" rel="noopener">BaseScan Read Contract</a></li>
+      </ul>
+    </div>
+
+    <p style="margin-top:16px">This change improves user safety by removing admin keys. There are no remaining privileged admin functions under key control (e.g., fee/blacklist toggles).</p>
+
+    <p><a href="https://davidaugustoribeirobrazil.github.io/selva.github.io/">← Back to home</a></p>
+  </div>
+</body>
+</html>
