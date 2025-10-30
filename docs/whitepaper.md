@@ -117,11 +117,3 @@ To improve UX in wallets and explorers:
 - Nothing in this document constitutes financial advice. Do your own research.
 
 ---
-
-## 10. Useful Links
-
-- **Token (BaseScan):** https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2  
-- **Pool (Uniswap v3 0.30%):** https://app.uniswap.org/positions/v3/base/4052179  
-- **Landing Page:** https://davidaugustoribeirobrazil.github.io/selva.github.io/  
-- **Whitepaper (HTML):** https://davidaugustoribeirobrazil.github.io/selva.github.io/SELVA_Whitepaper_v1_noAppendix.html  
-- **Whitepaper (PDF):** https://davidaugustoribeirobrazil.github.io/selva.github.io/SELVA_Whitepaper_v1_noAppendix.pdf
