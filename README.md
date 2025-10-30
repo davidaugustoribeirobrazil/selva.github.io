@@ -9,7 +9,7 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 
 ## Quick links
 
-- **Website (GitHub Pages):** https://davidaugustoribeirobrazil.github.io/selva.github.io/
+- **Website (GitHub Pages):** https://davidaugustoribeirobrazil.github.io/selva.github.io
 - **Token (BaseScan):** https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2
 - **Contract (BaseScan address):** https://basescan.org/address/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2
 - **Primary Pool (Uniswap v3 0.30%):** https://app.uniswap.org/positions/v3/base/4112611
