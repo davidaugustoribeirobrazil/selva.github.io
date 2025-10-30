@@ -36,3 +36,15 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 
 ## Repository layout
 
+## Onde me encontrar
+
+- Twitter/X: https://twitter.com/selvaonbase
+- Telegram: https://t.me/selvaonbase
+
+  ## Onde me encontrar
+
+[![Twitter/X](https://img.shields.io/badge/Follow-%40selvaonbase-black?logo=x&logoColor=white)](https://twitter.com/selvaonbase)
+[![Telegram](https://img.shields.io/badge/Telegram-selvaonbase-blue?logo=telegram)](https://t.me/selvaonbase)
+
+
+
