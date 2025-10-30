@@ -33,7 +33,7 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 
 ## Repository layout
 
-## Onde me encontrar
+## Contact
 
 [![Twitter/X](https://img.shields.io/badge/Follow-%40selvaonbase-black?logo=x&logoColor=white)](https://twitter.com/selvaonbase)
 
