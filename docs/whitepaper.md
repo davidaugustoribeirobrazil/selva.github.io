@@ -22,7 +22,7 @@ SELVA is an ERC-20 token deployed on the **Base** network with a **DEX-first** l
 - Token: `0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2`  
   View: https://basescan.org/token/0x5bD472E9c0fE7A6986Bc8E661BBc092f716133f2
 - Pool (Uniswap v3, fee=3000): `0xF109456223621006e35A66f4Fb5f934E0E63de09`  
-  View: https://app.uniswap.org/positions/v3/base/4052179
+  View: https://app.uniswap.org/positions/v3/base/4112611
 
 ---
 
