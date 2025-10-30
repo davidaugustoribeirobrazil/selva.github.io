@@ -27,7 +27,7 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 - **Symbol / Decimals:** `SELVA` / `18`
 - **Supply model:** Fixed (all minted once in constructor)
 - **Fees / blacklist / rebase:** **None**
-- **Ownership:** `Ownable`
+- **Ownership:** `Ownable Renounced`
   - Recommended: set a **multisig** as owner (Gnosis Safe / Safe)
   - Or renounce ownership if you don’t need privileged actions
 - **Chain:** Base (mainnet)
@@ -38,12 +38,8 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 
 ## Onde me encontrar
 
-- Twitter/X: https://twitter.com/selvaonbase
-- Telegram: https://t.me/selvaonbase
-
-  ## Onde me encontrar
-
 [![Twitter/X](https://img.shields.io/badge/Follow-%40selvaonbase-black?logo=x&logoColor=white)](https://twitter.com/selvaonbase)
+
 [![Telegram](https://img.shields.io/badge/Telegram-selvaonbase-blue?logo=telegram)](https://t.me/selvaonbase)
 
 
