@@ -16,7 +16,6 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 - **Whitepaper:**  
   - **Markdown:** [`docs/whitepaper.md`](docs/whitepaper.md)  
   - **HTML:** [`docs/SELVA_Whitepaper_v1_noAppendix.html`](docs/SELVA_Whitepaper_v1_noAppendix.html)  
-  - **PDF:** [`docs/SELVA_Whitepaper_v1_noAppendix.pdf`](docs/SELVA_Whitepaper_v1_noAppendix.pdf)
 - **Logos (SVG/PNG):** [`logos/`](logos/)
 
 ---
