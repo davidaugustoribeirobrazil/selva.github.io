@@ -27,8 +27,6 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 - **Supply model:** Fixed (all minted once in constructor)
 - **Fees / blacklist / rebase:** **None**
 - **Ownership:** `Ownable Renounced`
-  - Recommended: set a **multisig** as owner (Gnosis Safe / Safe)
-  - Or renounce ownership if you don’t need privileged actions
 - **Chain:** Base (mainnet)
 
 ---
