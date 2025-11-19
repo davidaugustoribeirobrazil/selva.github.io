@@ -1,0 +1,12 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#2F6BFF">
+    <!-- Triângulo superior -->
+    <polygon points="16,3 13,9 19,9"></polygon>
+    <!-- Triângulo do meio -->
+    <polygon points="16,8 11,17 21,17"></polygon>
+    <!-- Triângulo inferior -->
+    <polygon points="16,13 9,25 23,25"></polygon>
+    <!-- Tronco -->
+    <rect x="14" y="22" width="4" height="8" rx="0.5"></rect>
+  </g>
+</svg>
