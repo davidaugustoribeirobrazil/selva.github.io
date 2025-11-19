@@ -37,5 +37,6 @@ This repository contains the smart contracts, Hardhat setup, deployment/verifica
 
 [![Telegram](https://img.shields.io/badge/Telegram-selvaonbase-blue?logo=telegram)](https://t.me/selvaonbase)
 
+e-mail: selvaonbase@gmail.com
 
 
